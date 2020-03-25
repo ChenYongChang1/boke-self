@@ -1,0 +1,76 @@
+<template>
+  <div id="app">
+    <vue-particles
+      color="#D9D9D9"
+      :particleOpacity="0.7"
+      :particlesNumber="80"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#D9D9D9"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="3"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+    >
+    </vue-particles>
+    <div class="appcontent">
+      <router-view />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+interface ShowConfInter {
+  windPower: number;
+  speed: number;
+  count: number;
+  size: number;
+  opacity: number;
+  images: string[];
+}
+@Component({
+  components: {
+  }
+})
+export default class App extends Vue {
+}
+</script>
+
+<style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100%;
+  min-height: 200vh;
+  background: url("http://106.14.212.56/tim.jpg") fixed;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  cursor: url(https://files.cnblogs.com/files/wkfvawl/cursor.ico), auto;
+}
+#particles-js {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+.appcontent {
+  position: relative;
+  width: 80%;
+  min-width: 1000px;
+  max-width: 1400px;
+  z-index: 1;
+  margin: auto;
+  color: gray;
+}
+</style>
