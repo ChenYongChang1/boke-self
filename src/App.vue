@@ -16,8 +16,7 @@
       hoverMode="grab"
       :clickEffect="true"
       clickMode="push"
-    >
-    </vue-particles>
+    ></vue-particles>
     <div class="appcontent">
       <router-view />
     </div>
@@ -26,6 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { clickLove } from './assets/js/util'
 interface ShowConfInter {
   windPower: number;
   speed: number;
@@ -35,10 +35,12 @@ interface ShowConfInter {
   images: string[];
 }
 @Component({
-  components: {
-  }
+  components: {}
 })
 export default class App extends Vue {
+  created() {
+    clickLove()
+  }
 }
 </script>
 

@@ -10,8 +10,13 @@ Vue.use(vueParticles)
 
 
 import 'ant-design-vue/dist/antd.css';
-import { Calendar } from 'ant-design-vue'
+import { Calendar, Dropdown, Menu, Button  } from 'ant-design-vue'
+
 Vue.use(Calendar);
+Vue.use(Dropdown)
+Vue.use(Menu)
+Vue.use(Button)
+
 
 new Vue({
   router,

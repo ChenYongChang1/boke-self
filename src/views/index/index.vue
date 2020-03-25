@@ -1,30 +1,41 @@
 <template>
   <div class="content-index">
+    <div class="screen-list">
+      <div class="active-count">总文章：50</div>
+      <div class="screen-time">
+        <a-dropdown placement="bottomCenter">
+          <a-button>{{screenTimeList.find(item => item.id == screenTimeShow).name}}</a-button>
+          <a-menu slot="overlay">
+            <a-menu-item
+              v-for="item in screenTimeList"
+              :key="item.id"
+              @click="changeSceen(item.id)"
+            >
+              <a>{{item.name}}</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </div>
+    </div>
     <div class="active-list">
       <div class="active-item" v-for="item in listsActives" :key="item.id">
-        <div class="active-time">
-          {{ item.creatTime | formatTimeToChinese }}
-        </div>
+        <div class="active-time">{{ item.creatTime | formatTimeToChinese }}</div>
         <div class="active-title">
           <div class="active-img">
-            <img
-              :src="item.cover || require('../../assets/image/active.png')"
-              alt=""
-            />
+            <img :src="item.cover || require('../../assets/image/active.png')" alt />
           </div>
           <div class="titles">
-            <span>【置顶】</span
-            ><span>
-              {{ item.title }}
-            </span>
+            <span>【置顶】</span>
+            <span>{{ item.title }}</span>
           </div>
         </div>
         <div class="active-des">
-          摘要：{{ Array.prototype.slice.call(item.describe,0, 120).join('')}} <span>阅读原文</span>
+          摘要：{{ Array.prototype.slice.call(item.describe,0, 120).join('')}}
+          <span>阅读原文</span>
         </div>
-        <div class="active-common">
-          2020-03-25 美羊羊 阅读 ({{item.readPeopleNum}}) 评论 ({{item.commentNum}})
-        </div>
+        <div
+          class="active-common"
+        >2020-03-25 美羊羊 阅读 ({{item.readPeopleNum}}) 评论 ({{item.commentNum}})</div>
       </div>
     </div>
   </div>
@@ -39,6 +50,10 @@ interface activeInter {
   describe: String;
   readPeopleNum: Number;
   commentNum: Number;
+}
+interface screenTimeInter {
+  id: number;
+  name: string;
 }
 
 @Component({
@@ -65,14 +80,55 @@ export default class Index extends Vue {
         "出师表先帝创业未半而中道崩殂,今天下三分，益州疲弊此诚危急存亡之秋也。然侍卫之臣不懈于内忠志之士忘身于外者盖追先帝之殊遇,欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。【作者】诸葛亮 【朝代】三国时期 工具 第一篇： celery异步任务框架 第二",
       readPeopleNum: 10,
       commentNum: 5
+    },
+    {
+      id: 2,
+      title: "初始title",
+      cover: "",
+      creatTime: "2020-03-25",
+      describe:
+        "出师表先帝创业未半而中道崩殂,今天下三分，益州疲弊此诚危急存亡之秋也。然侍卫之臣不懈于内忠志之士忘身于外者盖追先帝之殊遇,欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。【作者】诸葛亮 【朝代】三国时期 工具 第一篇： celery异步任务框架 第二",
+      readPeopleNum: 10,
+      commentNum: 5
     }
   ];
+  screenTimeList: screenTimeInter[] = [
+    {
+      id: 1,
+      name: "按时间顺序"
+    },
+    {
+      id: 2,
+      name: "按时间倒序"
+    }
+  ];
+  screenTimeShow: number = 2;
+
+  changeSceen(id: number) {
+    this.screenTimeShow = id;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .content-index {
   width: 100%;
+  .screen-list {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    box-sizing: border-box;
+    .screen-time {
+      width: 100px;
+      height: 30px;
+    }
+    .active-count{
+      height: 30px;
+      line-height: 30px;
+      margin-right: 20px;
+    }
+  }
   .active-list {
     width: 100%;
     .active-item {
@@ -84,7 +140,10 @@ export default class Index extends Vue {
       border-radius: 5px;
       padding: 0 10px;
       box-sizing: border-box;
+      border-top: solid 1px gainsboro;
+      border-bottom: solid 1px gainsboro;
       transition: all 0.4s;
+      margin-bottom: 10px;
       .active-time {
         width: 100%;
         height: 50px;
@@ -122,27 +181,29 @@ export default class Index extends Vue {
           color: #21759b;
         }
       }
-      .active-des{
+      .active-des {
         width: 100%;
         padding: 10px;
         box-sizing: border-box;
         line-height: 20px;
-        span{
+        span {
           color: #333333;
-          &:hover{
+          &:hover {
             text-decoration: goldenrod;
             color: goldenrod;
           }
         }
       }
-      .active-common{
+      .active-common {
         width: 100%;
         height: 50px;
         line-height: 50px;
         padding: 0 10px;
       }
     }
-    .active-item:hover{
+    .active-item:hover {
+      border-top: solid 1px rgba(220, 220, 220, 0);
+      border-bottom: solid 1px rgba(220, 220, 220, 0);
       box-shadow: 0px 11px 10px 2px rgba(128, 128, 128, 0.658);
     }
   }

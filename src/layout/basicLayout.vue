@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <div class="header bgcolor">
+    <div
+      :class="headerShowHideFlag ===0 ? 'header bgcolor' : headerShowHideFlag ===1 ? 'header bgcolor header-show' : 'header bgcolor header-none' "
+      @mouseover="mouseover"
+      @mouseleave="mouseleave"
+    >
       <Header />
     </div>
     <div class="content">
@@ -16,14 +20,57 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import _ from "lodash";
 
+var headerShowHideInter: number | null = null;
 @Component({
   components: {
     Header: resolve => require(["../components/Header"], resolve),
     Sidbar: resolve => require(["../components/Sidbar"], resolve)
   }
 })
-export default class Basic extends Vue {}
+export default class Basic extends Vue {
+  oldScrollPosition: number = 0;
+  newScrollPosition: number = 0;
+  headerShowHideFlag: number = 0; //0 原始位置 1出现  2消失
+  created() {
+    this.listenerFunction();
+    this.handleScroll();
+  }
+  listenerFunction() {
+    document.addEventListener(
+      "scroll",
+      _.debounce(this.handleScroll, 80),
+      true
+    );
+  }
+  mouseover() {
+    this.headerShowHideFlag = 1;
+    headerShowHideInter && clearInterval(headerShowHideInter);
+  }
+  mouseleave() {
+    headerShowHideInter = setInterval(() => {
+      this.handleScroll();
+    }, 1500);
+  }
+  handleScroll() {
+    this.newScrollPosition = window.pageYOffset;
+    if (this.newScrollPosition <= 0) {
+      this.headerShowHideFlag = 0;
+      return;
+    }
+    if (this.newScrollPosition < this.oldScrollPosition) {
+      this.headerShowHideFlag = 1;
+      headerShowHideInter && clearInterval(headerShowHideInter);
+      headerShowHideInter = setInterval(() => {
+        this.headerShowHideFlag = 2;
+      }, 3000);
+    } else if (this.newScrollPosition > 80) {
+      this.headerShowHideFlag = 2;
+    }
+    this.oldScrollPosition = this.newScrollPosition;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -36,11 +83,28 @@ export default class Basic extends Vue {}
     border-radius: 10px;
     display: flex;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    transition: all 0.5s;
+    opacity: 1;
   }
   .bgcolor {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
   }
+  .header-none {
+    top: -50px;
+    opacity: 0;
+    transition: all 0.5s;
+  }
+  .header-show {
+    top: 0;
+    opacity: 1;
+    background: white;
+    transition: all 0.5s;
+  }
+
   .left {
     // background: rgba(12, 100, 129, 0.1);
   }

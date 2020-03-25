@@ -1,53 +1,20 @@
 <template>
   <header class="header-box">
-    header
-    <!-- <div class="search-input">
-      <input type="text" v-model="searchValue" /> 
-      <div class="search-select">
-        <div v-for="(item,index) in listsInput" :key="index">
-          <span  v-hightlight="{item: item.name, temp: searchValue, style:'color:#F96600'}">{{item.name}}</span>
-        </div>
-      </div>
-    </div> -->
+    <div class="logo">
+      <!-- <img src="../assets/image/logo.jpg" alt=""> -->
+      happysheep
+    </div>
+    <div class="login">
+      登录
+    </div>
   </header>
 </template>
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator'
 
-<script>
-// import { hightLightDirective } from '../directives/directives'
-export default {
-  data() {
-    return {
-      searchValue: '',
-      listsInput: [
-        {
-          name: "测试"
-        },
-        {
-          name: "你好"
-        },
-        {
-          name: "你干啥"
-        },
-        {
-          name: "你好呀"
-        }
-      ],
-    }
-  },
-  directives:{
-    // hightlight:hightLightDirective
-  },
-  computed: {
-    computedList: function() {
-      console.log(this.listsInput);
-      return this.listsInput.filter(
-        item => item.name.indexOf(this.searchInput) != -1
-      );
-    }
-  },
-  methods: {
-    
-  }
+@Component
+export default class Header extends Vue {
+  
 }
 </script>
 
@@ -57,11 +24,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .search-input {
-    width: 200px;
-    height: 25px;
-    position: relative;
-    .search-select {
+  padding: 0 20px;
+  box-sizing: border-box;
+  .logo{
+    // width: 100px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .login{
+    height: 30px;
+    font-size: 13px;
+    line-height: 30px;
+    &:hover{
+      font-weight: 550;
+      color: red;
     }
   }
 }
