@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import _ from "lodash";
+// import _ from "lodash";
 
 var headerShowHideInter: number | null = null;
 @Component({
@@ -40,7 +40,8 @@ export default class Basic extends Vue {
   listenerFunction() {
     document.addEventListener(
       "scroll",
-      _.debounce(this.handleScroll, 80),
+      // _.debounce(this.handleScroll, 80),
+      this.handleScroll,
       true
     );
   }
@@ -59,13 +60,13 @@ export default class Basic extends Vue {
       this.headerShowHideFlag = 0;
       return;
     }
-    if (this.newScrollPosition < this.oldScrollPosition) {
+    if (this.newScrollPosition < this.oldScrollPosition + 20) {
       this.headerShowHideFlag = 1;
       headerShowHideInter && clearInterval(headerShowHideInter);
       headerShowHideInter = setInterval(() => {
         this.headerShowHideFlag = 2;
       }, 3000);
-    } else if (this.newScrollPosition > 80) {
+    } else if (this.newScrollPosition > 80 && this.newScrollPosition > this.oldScrollPosition + 20) {
       this.headerShowHideFlag = 2;
     }
     this.oldScrollPosition = this.newScrollPosition;
