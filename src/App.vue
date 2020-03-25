@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+// tslint:disable-next-line
 import { clickLove } from './assets/js/util'
 interface ShowConfInter {
   windPower: number;

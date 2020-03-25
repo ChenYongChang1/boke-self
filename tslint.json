@@ -7,13 +7,5 @@
     "exclude": [
       "node_modules/**"
     ]
-  },
-  "rules": {
-    "no-empty-interface": true, // 不允许空接口
-    "no-parameter-reassignment": true, // 不允许修改方法输入参数
-    "await-promise": true, // 不允许没有Promise的情况下使用await
-    "curly": true, // if/for/do/while强制使用大括号
-    "forin": true, // 使用for in语句时，强制进行hasOwnProperty检查
-    "no-unnecessary-initializer": true, // 不允许没有必要的初始化
   }
 }
