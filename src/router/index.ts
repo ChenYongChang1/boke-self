@@ -14,7 +14,7 @@ const routes = [
       {
         path:'/index',
         name:'首页',
-        component: ()=>import('../views/index/index.vue')
+        component:(resolve:any) => require(['../views/index/index.vue'], resolve)
       }
     ]
   }
