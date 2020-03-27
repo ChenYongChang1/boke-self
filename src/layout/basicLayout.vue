@@ -22,39 +22,39 @@
 import { Component, Vue } from "vue-property-decorator";
 // import _ from "lodash";
 
-var headerShowHideInter: number | null = null;
+let headerShowHideInter: number | null = null;
 @Component({
   components: {
-    Header: resolve => require(["../components/Header"], resolve),
-    Sidbar: resolve => require(["../components/Sidbar"], resolve)
-  }
+    Header: (resolve) => require(["../components/Header"], resolve),
+    Sidbar: (resolve) => require(["../components/Sidbar"], resolve),
+  },
 })
 export default class Basic extends Vue {
-  oldScrollPosition: number = 0;
-  newScrollPosition: number = 0;
-  headerShowHideFlag: number = 0; //0 原始位置 1出现  2消失
-  created() {
+  public oldScrollPosition: number = 0;
+  public newScrollPosition: number = 0;
+  public headerShowHideFlag: number = 0; // 0 原始位置 1出现  2消失
+  public created() {
     this.listenerFunction();
     this.handleScroll();
   }
-  listenerFunction() {
+  public listenerFunction() {
     document.addEventListener(
       "scroll",
       // _.debounce(this.handleScroll, 80),
       this.handleScroll,
-      true
+      true,
     );
   }
-  mouseover() {
+  public mouseover() {
     this.headerShowHideFlag = 1;
     headerShowHideInter && clearInterval(headerShowHideInter);
   }
-  mouseleave() {
+  public mouseleave() {
     headerShowHideInter = setInterval(() => {
       this.handleScroll();
     }, 1500);
   }
-  handleScroll() {
+  public handleScroll() {
     this.newScrollPosition = window.pageYOffset;
     if (this.newScrollPosition <= 0) {
       this.headerShowHideFlag = 0;
@@ -78,6 +78,8 @@ export default class Basic extends Vue {
 .container {
   width: 100%;
   margin: 20px auto;
+  position: relative;
+  z-index: 1;
   .header {
     width: 100%;
     height: 50px;

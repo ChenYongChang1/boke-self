@@ -6,18 +6,28 @@
 // }
 
 export default {
+  namespaced: true,
   state: {
     userInfo: {
-      id: 1,
-      userName: 'happysheep',
-      token: '123',
-      userAgent: 'webkit qwsaedascasd'
-    }
+      "id": "12dsad",
+      "userAgent": "123",
+      "nikeName": "ddddd",
+      "userName": "cyc",
+      "password": "123",
+      "createTime": "2020-03-27",
+      "activeNum": 9,
+      "canEdit": true,
+      "canCommon": true
+    },
+    token: "",
   },
   mutations: {
+    setToken(state: any, token: string) {
+      state.token = token
+    }
   },
   actions: {
   },
   modules: {
   },
-}
+};

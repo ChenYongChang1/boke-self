@@ -42,35 +42,23 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-interface activeInter {
-  id: Number;
-  title: String;
-  cover: String;
-  creatTime: String;
-  describe: String;
-  readPeopleNum: Number;
-  commentNum: Number;
-}
-interface screenTimeInter {
-  id: number;
-  name: string;
-}
+import { activeInter, screenTimeInter } from '../../interface/views/index'
 
 @Component({
   filters: {
     formatTimeToChinese: (time: String) => {
       try {
-        let timeArr: string[] = time.split("-");
+        const timeArr: string[] = time.split("-");
         return timeArr[0] + "年" + timeArr[1] + "月" + timeArr[2] + "日";
       } catch (e) {
         return time;
       }
-    }
+    },
   },
-  components: {}
+  components: {},
 })
 export default class Index extends Vue {
-  listsActives: activeInter[] = [
+  public listsActives: activeInter[] = [
     {
       id: 1,
       title: "初始title",
@@ -79,7 +67,7 @@ export default class Index extends Vue {
       describe:
         "出师表先帝创业未半而中道崩殂,今天下三分，益州疲弊此诚危急存亡之秋也。然侍卫之臣不懈于内忠志之士忘身于外者盖追先帝之殊遇,欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。【作者】诸葛亮 【朝代】三国时期 工具 第一篇： celery异步任务框架 第二",
       readPeopleNum: 10,
-      commentNum: 5
+      commentNum: 5,
     },
     {
       id: 2,
@@ -89,22 +77,22 @@ export default class Index extends Vue {
       describe:
         "出师表先帝创业未半而中道崩殂,今天下三分，益州疲弊此诚危急存亡之秋也。然侍卫之臣不懈于内忠志之士忘身于外者盖追先帝之殊遇,欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。【作者】诸葛亮 【朝代】三国时期 工具 第一篇： celery异步任务框架 第二",
       readPeopleNum: 10,
-      commentNum: 5
-    }
+      commentNum: 5,
+    },
   ];
-  screenTimeList: screenTimeInter[] = [
+  public screenTimeList: screenTimeInter[] = [
     {
       id: 1,
-      name: "按时间顺序"
+      name: "按时间顺序",
     },
     {
       id: 2,
-      name: "按时间倒序"
-    }
+      name: "按时间倒序",
+    },
   ];
-  screenTimeShow: number = 2;
+  public screenTimeShow: number = 2;
 
-  changeSceen(id: number) {
+  public changeSceen(id: number) {
     this.screenTimeShow = id;
   }
 }

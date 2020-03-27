@@ -26,7 +26,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 // tslint:disable-next-line
-import { clickLove } from './assets/js/util'
+import { clickLove } from "./assets/js/util";
+// import axios from "./apis/axios";
+
 interface ShowConfInter {
   windPower: number;
   speed: number;
@@ -35,12 +37,17 @@ interface ShowConfInter {
   opacity: number;
   images: string[];
 }
+
 @Component({
   components: {}
 })
 export default class App extends Vue {
-  created() {
-    clickLove()
+  public created() {
+    console.log(process);
+    clickLove();
+    // axios.get("/query/querytable?db=video").then(res => {
+    //   console.log(res);
+    // });
   }
 }
 </script>
@@ -50,13 +57,24 @@ export default class App extends Vue {
   margin: 0;
   padding: 0;
 }
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(-60px);
+  opacity: 0.3;
+}
 body {
   width: 100%;
   min-height: 200vh;
   background: url("http://106.14.212.56/tim.jpg") fixed;
   background-position: 0 0;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   margin: 0 auto;
   cursor: url(https://files.cnblogs.com/files/wkfvawl/cursor.ico), auto;
 }
@@ -68,7 +86,7 @@ body {
   z-index: 0;
 }
 .appcontent {
-  position: relative;
+  // position: relative;
   width: 80%;
   min-width: 1000px;
   max-width: 1400px;
@@ -77,3 +95,7 @@ body {
   color: gray;
 }
 </style>
+
+
+
+  
