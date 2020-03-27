@@ -3,7 +3,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   css: {
-    modules: true, // 是否开启支持‘foo.module.css’样式
+    requireModuleExtension: true, // 是否开启支持‘foo.module.css’样式
     extract: true, // 是否使用css分离插件 ExtractTextPlugin，采用独立样式文件载入，不采用<style>方式内联至html文件中
     sourceMap: false, // 是否在构建样式地图，false将提高构建速度
     loaderOptions: {
@@ -16,5 +16,9 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: '8080',
-  }
+  },
+  configureWebpack:{
+    externals: {
+    }
+  },
 };

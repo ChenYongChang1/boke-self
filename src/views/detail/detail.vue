@@ -3,33 +3,49 @@
     <transition name="slide-fade">
       <div class="edit-components" v-if="editFlag">
         <div class="edit-inner">
-          <editMakeDownComponents></editMakeDownComponents>
+          <keep-alive>
+            <editMakeDownComponents
+              :markdownValue="contentMakeDown.text"
+              @saveMakeDown="saveMakeDown"
+              @cancelEdit="editShowHide(false)"
+            ></editMakeDownComponents>
+          </keep-alive>
         </div>
       </div>
     </transition>
-
-    <div class="detail-left">
-      <a-menu
-        @click="handleClick"
-        style="width: 256px"
-        :defaultSelectedKeys="['1']"
-        :openKeys.sync="openKeys"
-        mode="inline"
-      >
-        <a-sub-menu @titleClick="titleClick" v-for="item in siddbarList" :key="item.id">
-          <span slot="title">
-            <!-- <a-icon type="appstore" /> -->
-            <span>{{item.name}}</span>
-          </span>
-          <a-menu-item :key="childItem.id" v-for="childItem in item.children">{{childItem.name}}</a-menu-item>
-        </a-sub-menu>
-      </a-menu>
-    </div>
-    <div class="detail-right">
-      <div class="edit-btn" v-if="userInfo.canEdit">
-        <a-button type="primary">edit</a-button>
+    <div class="detail-header">headers</div>
+    <div class="detail-content">
+      <div class="detail-left">
+        <a-menu
+          @click="handleClick"
+          style="width: 256px"
+          :defaultSelectedKeys="['1']"
+          :openKeys.sync="openKeys"
+          mode="inline"
+        >
+          <a-sub-menu @titleClick="titleClick" v-for="item in siddbarList" :key="item.id">
+            <span slot="title">
+              <!-- <a-icon type="appstore" /> -->
+              <span>{{item.name}}</span>
+            </span>
+            <a-menu-item :key="childItem.id" v-for="childItem in item.children">{{childItem.name}}</a-menu-item>
+          </a-sub-menu>
+        </a-menu>
       </div>
-      <div v-html="contentMakeDown.text"></div>
+      <div class="detail-right">
+        <div class="edit-btn" v-if="userInfo.canEdit">
+          <a-button type="primary" @click="editShowHide(true)">edit</a-button>
+        </div>
+        <!-- v-html="markdown.toHTML(contentMakeDown.text)" -->
+        <div class="detail-markdown-content">
+          <MarkdownPro
+            :isPreview="true"
+            :bordered="false"
+            :value="contentMakeDown.text"
+            :background="'rgba(0,0,0,0)'"
+          ></MarkdownPro>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -45,7 +61,9 @@ const userInfoNameSpace = namespace("userStore");
 @Component({
   components: {
     editMakeDownComponents: resolve =>
-      require(["../../components/editMakeDown.vue"], resolve)
+      require(["../../components/EditMakeDown.vue"], resolve),
+    MarkdownPro: resolve =>
+      require(["../../components/src/components/pro/index.vue"], resolve)
   }
 })
 export default class Detail extends Vue {
@@ -76,7 +94,7 @@ export default class Detail extends Vue {
     text: "",
     userId: ""
   };
-  private editFlag: boolean = true;
+  private editFlag: boolean = false;
 
   // private userInfo:any = userInfoNameSpace.State
   public created() {
@@ -104,17 +122,15 @@ export default class Detail extends Vue {
   public titleClick(e: any) {
     console.log("titleClick", e);
   }
+  private saveMakeDown(value: string) {
+    this.editShowHide(false);
+    this.contentMakeDown.text = value;
+    console.log(value);
+  }
   private async getMdtest() {
     let res = await requests.getMdtest();
     this.contentMakeDown = res.data.data.Data[0];
-    this.showmakedown(this.contentMakeDown.text);
     console.log(this.contentMakeDown);
-  }
-  private showmakedown(text: string) {
-    //        创建实例
-    var converter = new showdown.Converter();
-    //        进行转换
-    this.contentMakeDown.text = converter.makeHtml(text);
   }
 }
 </script>
@@ -123,47 +139,74 @@ export default class Detail extends Vue {
 .detail-view {
   width: 100%;
   // background: rgba($color: #ffffff, $alpha: 0.5);
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
+  .detail-header {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background: rgba($color: #ffffff, $alpha: 0.5);
+    border-radius: 5px;
+    margin: 10px auto;
+  }
   .edit-components {
     position: fixed;
-    top: -50px;
+    top: 0px;
     left: 0;
     width: 100%;
     min-height: calc(100vh + 50px);
     background: rgba($color: #000000, $alpha: 0.5);
     z-index: 999;
-    .edit-inner{
+    .edit-inner {
       width: 80%;
+      background: white;
+      border-radius: 5px;
+      overflow: hidden;
       margin: auto;
+      max-height: 70%;
+      overflow-y: auto;
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
-  .detail-left {
-    width: 256px;
-    position: relative;
-    z-index: 1;
-    // .ant-menu-sub {
-    //   background: rgba($color: #ffffff, $alpha: 0.5);
-    // }
-  }
-  .detail-right {
-    width: calc(100% - 270px);
-    background: rgba($color: #ffffff, $alpha: 0.5);
-    padding: 0 20px;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1;
-    .edit-btn {
-      width: 100px;
-      height: 30px;
-      line-height: 30px;
-      position: absolute;
-      right: 20px;
-      top: 10px;
-      button {
-        width: 100%;
-        height: 100%;
+  .detail-content {
+    display: flex;
+    justify-content: space-between;
+    .detail-left {
+      width: 256px;
+      position: relative;
+      z-index: 1;
+      .ant-menu{
+        background: rgba($color: #ffffff, $alpha: 0.5);
+      }
+      
+    }
+    .detail-left::v-deep .ant-menu-submenu > .ant-menu {
+        background: rgba($color: #ffffff, $alpha: 0);
+      }
+    .detail-right {
+      width: calc(100% - 270px);
+      background: rgba($color: #ffffff, $alpha: 0.5);
+      padding: 0 20px;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 1;
+      .edit-btn {
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        z-index: 3;
+        right: 20px;
+        top: 10px;
+        button {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .detail-markdown-content{
+        position: relative;
+        z-index: 1;
       }
     }
   }

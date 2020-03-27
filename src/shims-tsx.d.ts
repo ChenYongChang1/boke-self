@@ -13,3 +13,4 @@ declare global {
 }
 
 declare module "lodash";
+declare module "markdown"
