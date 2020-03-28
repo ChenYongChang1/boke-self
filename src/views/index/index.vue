@@ -1,7 +1,7 @@
 <template>
   <div class="content-index">
     <div class="screen-list">
-      <div class="active-count">总文章：50</div>
+      <div class="active-count">总文章：{{activesNum}}</div>
       <div class="screen-time">
         <a-dropdown placement="bottomCenter">
           <a-button>{{screenTimeList.find(item => item.id == screenTimeShow).name}}</a-button>
@@ -18,14 +18,14 @@
       </div>
     </div>
     <div class="active-list">
-      <div class="active-item" v-for="item in listsActives" :key="item.id">
+      <div class="active-item" v-for="item in listsActives" :key="item.id" @click="$router.push({path:'/detail/'+item.id})">
         <div class="active-time">{{ item.creatTime | formatTimeToChinese }}</div>
         <div class="active-title">
           <div class="active-img">
             <img :src="item.cover || require('../../assets/image/active.png')" alt />
           </div>
           <div class="titles">
-            <span>【置顶】</span>
+            <span v-if="item.toTop">【置顶】</span>
             <span>{{ item.title }}</span>
           </div>
         </div>
@@ -35,7 +35,7 @@
         </div>
         <div
           class="active-common"
-        >2020-03-25 美羊羊 阅读 ({{item.readPeopleNum}}) 评论 ({{item.commentNum}})</div>
+        >{{item.createTime}} 美羊羊 阅读 ({{item.lookNum}})</div>
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { activeInter, screenTimeInter } from '../../interface/views/index'
-
+import requests from './request/requests'
 @Component({
   filters: {
     formatTimeToChinese: (time: String) => {
@@ -59,27 +59,8 @@ import { activeInter, screenTimeInter } from '../../interface/views/index'
 })
 export default class Index extends Vue {
   public listsActives: activeInter[] = [
-    {
-      id: 1,
-      title: "初始title",
-      cover: "",
-      creatTime: "2020-03-25",
-      describe:
-        "出师表先帝创业未半而中道崩殂,今天下三分，益州疲弊此诚危急存亡之秋也。然侍卫之臣不懈于内忠志之士忘身于外者盖追先帝之殊遇,欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。【作者】诸葛亮 【朝代】三国时期 工具 第一篇： celery异步任务框架 第二",
-      readPeopleNum: 10,
-      commentNum: 5,
-    },
-    {
-      id: 2,
-      title: "初始title",
-      cover: "",
-      creatTime: "2020-03-25",
-      describe:
-        "出师表先帝创业未半而中道崩殂,今天下三分，益州疲弊此诚危急存亡之秋也。然侍卫之臣不懈于内忠志之士忘身于外者盖追先帝之殊遇,欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。【作者】诸葛亮 【朝代】三国时期 工具 第一篇： celery异步任务框架 第二",
-      readPeopleNum: 10,
-      commentNum: 5,
-    },
   ];
+  private activesNum: number =0;
   public screenTimeList: screenTimeInter[] = [
     {
       id: 1,
@@ -92,8 +73,24 @@ export default class Index extends Vue {
   ];
   public screenTimeShow: number = 2;
 
+  created(){
+    this.getActives()
+  }
+
   public changeSceen(id: number) {
     this.screenTimeShow = id;
+  }
+  private async getActives(){
+    let res = await requests.getActives()
+    
+    if(res && res.status == 200 && res.data.code =="200"){
+      console.log(res.data.data.Data);
+      res.data.data.Data.forEach((element:any) => {
+        element.describe="太懒了"
+      });
+      this.listsActives = res.data.data.Data;
+      this.activesNum = res.data.data.length
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template lang="html">
-    <div :class="`markdown ${fullscreen ? 'fullscreen' : ''} ${bordered ? 'border' : ''}`" ref="markdown" :style="{ width: width + 'px', height: height + 'px', background: background }">
+    <div :class="`markdown ${fullscreen ? 'fullscreen' : ''} ${bordered ? 'border' : ''}`" ref="markdown" :style="{ width: width + 'px', 'min-height': height + 'px', background: background }">
         <!-- 头部工具栏 -->
-        <ul class="markdown-toolbars" v-show="!preview">
+        <ul class="markdown-toolbars" v-if="!preview">
             <li>
                 <slot name="title"/>
             </li>
@@ -110,7 +110,7 @@
                     </ul>
                 </div>
             </li>
-            <li name="导入文件" class="import-file" v-show="tools.importmd">
+            <li name="导入文件" class="import-file" v-if="tools.importmd">
                 <span class="iconfont icon-daoru" @click="importFile"></span>
                 <input
                     type="file"
@@ -118,7 +118,7 @@
                     accept="text/markdown"
                 />
             </li>
-            <li name="保存到本地" v-show="tools.exportmd">
+            <li name="保存到本地" v-if="tools.exportmd">
                 <span class="iconfont icon-download" @click="exportFile"></span>
             </li>
             <li v-if="tools.split && split" name="全屏编辑">
@@ -168,7 +168,7 @@
         <!-- 关闭预览按钮 -->
         <div
             class="close-preview"
-            v-show="preview && !isPreview"
+            v-if="preview && !isPreview"
             @click="preview = false"
         >
             <span class="iconfont icon-close"></span>
@@ -181,11 +181,11 @@
             <div
                 class="codemirror"
                 ref="codemirror"
-                v-show="!preview"
+                v-if="!preview"
                 @mouseenter="mousescrollSide('left')"
             ></div>
             <div
-                v-show="preview ? preview : split"
+                v-if="preview ? preview : split"
                 :class="`markdown-preview ${'markdown-theme-' + themeName} ${background && 'background-none'}`"
                 ref="preview"
                 :style="{background: background || ''}"

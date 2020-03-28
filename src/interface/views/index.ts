@@ -1,11 +1,20 @@
+interface catalogInter {
+  id: string | number;
+  name: string;
+  mdId: string | number;
+  childrens?: catalogInter[]
+}
+
 interface activeInter {
-  id: Number;
-  title: String;
-  cover: String;
-  creatTime: String;
-  describe: String;
-  readPeopleNum: Number;
-  commentNum: Number;
+  id: string | number;
+  title: string;
+  cover: string;
+  createTime: string;
+  userId: string;
+  lookNum: number;
+  toTop: true;
+  describe?: string;
+  catalog?: catalogInter[]
 }
 interface screenTimeInter {
   id: number;

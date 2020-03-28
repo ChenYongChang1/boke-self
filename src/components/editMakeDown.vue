@@ -47,7 +47,7 @@ export default class EditMakeDown extends Vue {
   @Prop()
   markdownValue:any
 
-  created() {
+  activated() {
     console.log(this.markdownValue,'this.markdownValue');
     this.contentMakeDown = this.markdownValue
     this.getOssSign();
@@ -85,7 +85,7 @@ export default class EditMakeDown extends Vue {
         // console.log(r,'http://tfoneline.oss-cn-hangzhou.aliyuncs.com/'+`${this.signsObj.dir}/${names}`);
         let imgUrl: string =
           that.ossSignObj.host + "/" + `${this.ossSignObj.dir}/${names}`;
-        this.that_insertContent(`![image](${imgUrl})`);
+        this.that_insertContent(`\n![image](${imgUrl})\n `);
         return imgUrl;
       })
       .catch((e: any) => {

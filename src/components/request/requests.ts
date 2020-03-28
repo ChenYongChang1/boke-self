@@ -10,6 +10,7 @@ const requests = {
       withCredentials: false
     })
   },
+  
 }
 
 export default requests

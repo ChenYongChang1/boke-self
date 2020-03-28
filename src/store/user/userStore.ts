@@ -11,7 +11,7 @@ export default {
     userInfo: {
       "id": "12dsad",
       "userAgent": "123",
-      "nikeName": "ddddd",
+      "userNick": "ddddd",
       "userName": "cyc",
       "password": "123",
       "createTime": "2020-03-27",

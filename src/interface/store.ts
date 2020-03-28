@@ -1,6 +1,6 @@
 interface userInfoInter {
   id: string | number;
-  nickName: string;
+  userNick: string;
   userName?: string;
   password?: string;
   createTime: string;

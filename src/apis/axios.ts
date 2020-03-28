@@ -5,7 +5,7 @@ import baseUrl from "./host";
 
 const Axios = axios.create({
   baseURL: baseUrl,
-  timeout: 5000,
+  timeout: 10000,
 });
 
 async function tokenLogin() {
