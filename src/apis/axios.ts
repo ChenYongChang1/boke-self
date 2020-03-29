@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { stateinter } from "../interface/store";
 import store from "../store/index";
 import baseUrl from "./host";
@@ -15,7 +15,7 @@ let responseLogin;
 Axios.interceptors.request.use(
   async (config: AxiosRequestConfig) => {
     console.log(store);
-    if (config.url === '/user/login') {
+    if (config.url === "/user/login") {
       return config;
     }
     if ((store.state as stateinter).userStore.token) {

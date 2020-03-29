@@ -77,34 +77,33 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
+import { namespace } from "vuex-class";
 import {
-  siddBarInter,
-  activeInter,
   activeDetailInter,
-  activesCommon
+  activeInter,
+  activesCommon,
+  siddBarInter,
 } from "../../interface/views/detail";
 import requests from "./request/request";
-import { namespace } from "vuex-class";
 
 const userInfoNameSpace = namespace("userStore");
 
 @Component({
   components: {
-    editMakeDownComponents: resolve =>
+    editMakeDownComponents: (resolve) =>
       require(["../../components/EditMakeDown.vue"], resolve),
-    MarkdownPro: resolve =>
+    MarkdownPro: (resolve) =>
       require(["../../components/src/components/pro/index.vue"], resolve),
-    DetailCommon: resolve =>
-      require(["../../components/DetailCommon.vue"], resolve)
-  }
+    DetailCommon: (resolve) =>
+      require(["../../components/DetailCommon.vue"], resolve),
+  },
 })
 export default class Detail extends Vue {
-  @userInfoNameSpace.State(state => state.userInfo)
-  userInfo: any;
+  @userInfoNameSpace.State((state) => state.userInfo)
+  public userInfo: any;
   // siddBarInter
   public id: string | number = "";
   public openKeys: Array<string | number> = [];
-  private selectedKey: Array<string | number> = [];
   public activeDetail: activeDetailInter = {
     id: "",
     title: "",
@@ -113,16 +112,14 @@ export default class Detail extends Vue {
     lookNum: 0,
     cover: "",
     toTop: true,
-    catalog: []
+    catalog: [],
   };
-  private activesCommonList: activesCommon[] = [];
   public contentMakeDown: activeInter = {
     id: "",
-    text: ""
+    text: "",
   };
-  private editFlag: boolean = false;
 
-  commonNewInsert: activesCommon = {
+  public commonNewInsert: activesCommon = {
     id: "",
     mdId: "",
     text: "",
@@ -131,8 +128,11 @@ export default class Detail extends Vue {
     userNick: "",
     editFlag: false,
     childrensShow: false,
-    childrens: []
+    childrens: [],
   };
+  private selectedKey: Array<string | number> = [];
+  private activesCommonList: activesCommon[] = [];
+  private editFlag: boolean = false;
 
   private changeCommonIndex: number | null | undefined = null;
   private mdId: string | number = "";
@@ -148,9 +148,9 @@ export default class Detail extends Vue {
     console.log(newVal, "watch");
   }
   // 子组件传过来需要修改的childrens id
-  addComonUpdata({
+  public addComonUpdata({
     childrens,
-    id
+    id,
   }: {
     childrens: activesCommon;
     id: string | number;
@@ -158,13 +158,13 @@ export default class Detail extends Vue {
     this.addChildrens({
       activesCommonList: this.activesCommonList,
       childrens,
-      id
+      id,
     });
   }
-  async addChildrens({
+  public async addChildrens({
     activesCommonList,
     childrens,
-    id
+    id,
   }: {
     activesCommonList: activesCommon[];
     childrens: activesCommon;
@@ -178,13 +178,13 @@ export default class Detail extends Vue {
     this.activesCommonList = JSON.parse(JSON.stringify(activesCommonList));
     this.addcommon("updata");
   }
-  editTreeData(
+  public editTreeData(
     treeData: activesCommon[],
     newTreeNode: activesCommon,
-    nowIndex?: number | undefined
+    nowIndex?: number | undefined,
   ) {
     for (let i = 0, len = treeData.length; i < len; i++) {
-      if (this.activesCommonList.some(item => item.id == treeData[i].id)) {
+      if (this.activesCommonList.some((item) => item.id == treeData[i].id)) {
         nowIndex = i;
       }
       if (treeData[i].childrens) {
@@ -197,13 +197,8 @@ export default class Detail extends Vue {
     }
     return treeData;
   }
-
-  private editShowHide(flag?: boolean | undefined) {
-    this.editFlag =
-      typeof flag === "undefined" ? !this.editFlag : flag || false;
-  }
   public setDefaultOpen(siddbarObj: siddBarInter | undefined) {
-    console.log(siddbarObj,'siddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObj');
+    console.log(siddbarObj, "siddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObj");
     if (typeof siddbarObj == "undefined") {
       return;
     }
@@ -221,24 +216,29 @@ export default class Detail extends Vue {
   public titleClick(e: any) {
     console.log("titleClick", e);
   }
+
+  private editShowHide(flag?: boolean | undefined) {
+    this.editFlag =
+      typeof flag === "undefined" ? !this.editFlag : flag || false;
+  }
   private saveMakeDown(value: string) {
-    
+
     this.contentMakeDown.text = value;
-    this.updataMakedown(value)
+    this.updataMakedown(value);
     console.log(value);
   }
-  private async updataMakedown(value:string){
-    let res = await requests.updataMakedown({id:this.mdId,text:value})
+  private async updataMakedown(value: string) {
+    const res = await requests.updataMakedown({id: this.mdId, text: value});
     this.editShowHide(false);
   }
   private async getActives() {
     console.log(this.id, "this.id");
-    let res = await requests.getActives(this.id);
+    const res = await requests.getActives(this.id);
     if (res && res.status == 200 && res.data.code == "200") {
       this.activeDetail = res.data.data.Data[0];
       if (this.activeDetail.catalog) {
         this.setDefaultOpen(
-          this.activeDetail.catalog && this.activeDetail.catalog[0]
+          this.activeDetail.catalog && this.activeDetail.catalog[0],
         );
         this.mdId =
           (this.activeDetail.catalog &&
@@ -256,7 +256,7 @@ export default class Detail extends Vue {
         lookNum: 0,
         cover: "",
         toTop: true,
-        catalog: []
+        catalog: [],
       };
     }
   }
@@ -267,7 +267,7 @@ export default class Detail extends Vue {
       this.contentMakeDown.id = "";
       return;
     }
-    let res = await requests.getMdText(id);
+    const res = await requests.getMdText(id);
     if (res && res.status == 200 && res.data.code == "200") {
       this.setMarkDownText(res.data.data.Data);
       this.getActivesCommonList(res.data.data.Data[0].id);
@@ -276,7 +276,7 @@ export default class Detail extends Vue {
     }
   }
   private async getActivesCommonList(id: string | number) {
-    let res = await requests.getActivesCommonList(id);
+    const res = await requests.getActivesCommonList(id);
     if (res && res.status == 200 && res.data.code == "200") {
       this.activesCommonList = res.data.data.Data;
     } else {
@@ -289,18 +289,18 @@ export default class Detail extends Vue {
       console.log(
         this.activesCommonList,
         "this.activesCommonList",
-        this.changeCommonIndex as number
+        this.changeCommonIndex as number,
       );
-      let res = await requests.updataCommon(
+      const res = await requests.updataCommon(
         this.activesCommonList[this.changeCommonIndex as number],
-        this.activesCommonList[this.changeCommonIndex as number].id
+        this.activesCommonList[this.changeCommonIndex as number].id,
       );
       if (res && res.status == 200 && res.data.code == "200") {
         console.log(res);
       } else {
       }
     } else {
-      let res = await requests.addcommon(this.activesCommonList);
+      const res = await requests.addcommon(this.activesCommonList);
       if (res && res.status == 200 && res.data.code == "200") {
         console.log(res);
       } else {
@@ -312,15 +312,15 @@ export default class Detail extends Vue {
       id: Math.random() + "",
       mdId: this.mdId ,
       text: this.commonNewInsert.text,
-      createTime: new Date().toLocaleDateString().replace(/\//g,"-"),
+      createTime: new Date().toLocaleDateString().replace(/\//g, "-"),
       userId: this.userInfo.id,
       userNick: this.userInfo.userNick,
       editFlag: false,
       childrensShow: false,
-      childrens: []
+      childrens: [],
     };
     this.activesCommonList.push({ ...this.commonNewInsert });
-    let res = await requests.addcommon(this.commonNewInsert);
+    const res = await requests.addcommon(this.commonNewInsert);
     if (res && res.status == 200 && res.data.code == "200") {
       console.log(res);
     } else {

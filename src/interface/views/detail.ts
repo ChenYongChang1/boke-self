@@ -17,7 +17,7 @@ interface activeDetailInter {
   userId: string;
   lookNum: number;
   toTop: true;
-  catalog?: siddBarInter[]
+  catalog?: siddBarInter[];
 }
 
 interface activesCommon {
@@ -29,7 +29,7 @@ interface activesCommon {
   userNick: string;
   editFlag: boolean;
   childrensShow: boolean;
-  childrens?: activesCommon[]
+  childrens?: activesCommon[];
 }
 
-export { siddBarInter, activeInter, activeDetailInter, activesCommon }
+export { siddBarInter, activeInter, activeDetailInter, activesCommon };

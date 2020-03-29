@@ -11,7 +11,7 @@ interface userInfoInter {
 }
 
 interface userStore {
-  userInfo:userInfoInter;
+  userInfo: userInfoInter;
   token: string;
 }
 interface stateinter {

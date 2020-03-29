@@ -6,4 +6,4 @@ interface ossSignInter {
   policy: string;
   signature: string;
 }
-export { ossSignInter }
+export { ossSignInter };

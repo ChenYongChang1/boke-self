@@ -42,8 +42,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { activeInter, screenTimeInter } from '../../interface/views/index'
-import requests from './request/requests'
+import { activeInter, screenTimeInter } from "../../interface/views/index";
+import requests from "./request/requests";
 @Component({
   filters: {
     formatTimeToChinese: (time: String) => {
@@ -60,7 +60,6 @@ import requests from './request/requests'
 export default class Index extends Vue {
   public listsActives: activeInter[] = [
   ];
-  private activesNum: number =0;
   public screenTimeList: screenTimeInter[] = [
     {
       id: 1,
@@ -72,24 +71,25 @@ export default class Index extends Vue {
     },
   ];
   public screenTimeShow: number = 2;
+  private activesNum: number = 0;
 
-  created(){
-    this.getActives()
+  public created() {
+    this.getActives();
   }
 
   public changeSceen(id: number) {
     this.screenTimeShow = id;
   }
-  private async getActives(){
-    let res = await requests.getActives()
-    
-    if(res && res.status == 200 && res.data.code =="200"){
+  private async getActives() {
+    const res = await requests.getActives();
+
+    if (res && res.status == 200 && res.data.code == "200") {
       console.log(res.data.data.Data);
-      res.data.data.Data.forEach((element:any) => {
-        element.describe="太懒了"
+      res.data.data.Data.forEach((element: any) => {
+        element.describe = "太懒了";
       });
       this.listsActives = res.data.data.Data;
-      this.activesNum = res.data.data.length
+      this.activesNum = res.data.data.length;
     }
   }
 }

@@ -2,7 +2,7 @@ interface catalogInter {
   id: string | number;
   name: string;
   mdId: string | number;
-  childrens?: catalogInter[]
+  childrens?: catalogInter[];
 }
 
 interface activeInter {
@@ -14,10 +14,10 @@ interface activeInter {
   lookNum: number;
   toTop: true;
   describe?: string;
-  catalog?: catalogInter[]
+  catalog?: catalogInter[];
 }
 interface screenTimeInter {
   id: number;
   name: string;
 }
-export { activeInter, screenTimeInter }
+export { activeInter, screenTimeInter };

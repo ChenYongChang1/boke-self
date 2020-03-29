@@ -2,13 +2,13 @@ interface configInter {
   assToken?: string;
 }
 interface userLoginResponse {
-  data:{
-    assToken: string
-  }
+  data: {
+    assToken: string,
+  };
 }
 
 
 export {
   configInter,
-  userLoginResponse
+  userLoginResponse,
 };

@@ -39,7 +39,7 @@ interface ShowConfInter {
 }
 
 @Component({
-  components: {}
+  components: {},
 })
 export default class App extends Vue {
   public created() {

@@ -31,9 +31,9 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import requests from "./request/requests";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { activesCommon } from "../interface/views/detail";
+import requests from "./request/requests";
 
 import { namespace } from "vuex-class";
 
@@ -41,56 +41,56 @@ const userInfoNameSpace = namespace("userStore");
 
 @Component({
   components: {
-    DetailCommon: resolve => require(["./DetailCommon.vue"], resolve)
-  }
+    DetailCommon: (resolve) => require(["./DetailCommon.vue"], resolve),
+  },
 })
 export default class DetailCommon extends Vue {
   @Prop()
-  activesCommonList: any;
+  public activesCommonList: any;
 
   @Prop()
-  mdId: any;
+  public mdId: any;
 
-  @userInfoNameSpace.State(state => state.userInfo)
-  userInfo: any;
+  @userInfoNameSpace.State((state) => state.userInfo)
+  public userInfo: any;
 
-  componCommonList: activesCommon[] = [];
-  commonNewInsert: activesCommon = {
+  public componCommonList: activesCommon[] = [];
+  public commonNewInsert: activesCommon = {
     id: Math.random() + "",
     text: "",
     createTime: "",
     userId: "",
-    mdId:this.mdId,
+    mdId: this.mdId,
     userNick: "",
     editFlag: false,
     childrensShow: false,
-    childrens: []
+    childrens: [],
   };
 
-  created() {
+  public created() {
     console.log(this.componCommonList, " this.componCommonList");
     this.componCommonList = JSON.parse(JSON.stringify(this.activesCommonList));
   }
   @Watch("activesCommonList")
-  activesCommonListChange(newVal: activesCommon[]) {
+  public activesCommonListChange(newVal: activesCommon[]) {
     this.componCommonList = JSON.parse(JSON.stringify(newVal));
   }
 
-  saveCommon(index: number) {
+  public saveCommon(index: number) {
     this.commonNewInsert = {
       id: Math.random() + "",
-      mdId:this.mdId,
+      mdId: this.mdId,
       text: this.commonNewInsert.text,
       createTime: new Date().toLocaleDateString(),
       userId: this.userInfo.id,
       userNick: this.userInfo.userNick,
       editFlag: false,
       childrensShow: false,
-      childrens: []
+      childrens: [],
     };
     if (this.componCommonList[index].childrens) {
       (this.componCommonList[index].childrens as activesCommon[]).unshift({
-        ...this.commonNewInsert
+        ...this.commonNewInsert,
       });
     } else {
       this.componCommonList[index].childrens = [{ ...this.commonNewInsert }];
@@ -100,29 +100,29 @@ export default class DetailCommon extends Vue {
     this.commonNewInsert = {
       id: "",
       text: "",
-      mdId:this.mdId,
+      mdId: this.mdId,
       createTime: "",
       userId: "",
       userNick: "",
       editFlag: false,
       childrensShow: false,
-      childrens: []
+      childrens: [],
     };
     // this.$emit('addComonUpdata', {id: this.componCommonList[index].id, childrens: this.componCommonList[index].childrens, index: index})
-    this.addComonUpdata({ childrens: this.componCommonList[index], id:this.componCommonList[index].id });
+    this.addComonUpdata({ childrens: this.componCommonList[index], id: this.componCommonList[index].id });
   }
-  showChildrens(index: number) {
+  public showChildrens(index: number) {
     this.componCommonList[index].childrensShow = !this.componCommonList[index]
       .childrensShow;
   }
-  editFlagChange(index: number) {
+  public editFlagChange(index: number) {
     this.componCommonList[index].editFlag = !this.componCommonList[index]
       .editFlag;
   }
   // 子组件传过来需要修改的childrens id
-  addComonUpdata({ childrens,id }: { childrens: activesCommon,id:string|number }) {
-    console.log(this.componCommonList,'this.componCommonList');
-    this.$emit("addComonUpdata", { childrens:childrens, id });
+  public addComonUpdata({ childrens, id }: { childrens: activesCommon, id: string|number }) {
+    console.log(this.componCommonList, "this.componCommonList");
+    this.$emit("addComonUpdata", { childrens, id });
   }
 }
 </script>

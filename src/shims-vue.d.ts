@@ -5,4 +5,4 @@ declare module "*.vue" {
 
 declare module "lodash";
 declare module "vue-particles";
-declare module "markdown"
+declare module "markdown";

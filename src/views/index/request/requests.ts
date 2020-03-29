@@ -1,12 +1,12 @@
-import axios from '../../../apis/axios'
+import axios from "../../../apis/axios";
 
-let requests = {
+const requests = {
 
   getActives() {
-    let payload = {
-      "jsonMessage": {}, "db": "boke", "table": "actives"
-    }
-    return axios.post('/query/getdata', payload)
+    const payload = {
+      jsonMessage: {}, db: "boke", table: "actives",
+    };
+    return axios.post("/query/getdata", payload);
   },
-}
-export default requests
+};
+export default requests;
