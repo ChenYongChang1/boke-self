@@ -164,6 +164,7 @@ export default class Detail extends Vue {
     title: "",
     userId: "",
     createTime: "",
+    userNick:"",
     lookNum: 0,
     cover: "",
     toTop: true,
@@ -454,6 +455,7 @@ export default class Detail extends Vue {
         userId: "",
         createTime: "",
         lookNum: 0,
+        userNick:"",
         cover: "",
         toTop: true,
         catalog: []

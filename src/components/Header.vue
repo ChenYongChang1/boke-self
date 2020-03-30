@@ -23,6 +23,7 @@ export default class Header extends Vue {
       userId: this.userInfo.id,
       createTime: new Date().toLocaleDateString().replace(/\//g,'-'),
       lookNum: 0,
+      userNick:this.userInfo.userNick,
       cover: "",
       toTop: true,
       catalog: []

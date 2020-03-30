@@ -17,6 +17,7 @@ interface activeDetailInter {
   createTime: string;
   userId: string;
   lookNum: number;
+  userNick:string;
   toTop: true;
   catalog?: siddBarInter[];
 }

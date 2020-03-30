@@ -35,7 +35,7 @@
         </div>
         <div
           class="active-common"
-        >{{item.createTime}} 美羊羊 阅读 ({{item.lookNum}})</div>
+        >{{item.createTime}} {{item.userNick || item.userId}} 阅读 ({{item.lookNum}})</div>
       </div>
     </div>
   </div>

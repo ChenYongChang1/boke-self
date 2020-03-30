@@ -11,6 +11,7 @@ interface activeInter {
   cover: string;
   createTime: string;
   userId: string;
+  userNick: string;
   lookNum: number;
   toTop: true;
   describe?: string;
