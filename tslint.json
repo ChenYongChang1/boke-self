@@ -39,6 +39,8 @@
     "no-arg":true,
     "no-conditional-assignment":true,
     "no-debugger":false,
+    "no-console":false,
+    "object-literal-sort-keys": false,
     "no-duplicate-super":true,
     "no-for-in-array":true,
     "no-invalid-template-strings":true,

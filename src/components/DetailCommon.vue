@@ -8,9 +8,10 @@
           <span
             class="detail-repeat"
             @click.stop="editFlagChange(index)"
+            v-if="userInfo.canCommon"
           >回复({{item.childrens && item.childrens.length || 0}})</span>
         </div>
-        <div class="detail-repeat-input" v-if="item.editFlag">
+        <div class="detail-repeat-input" v-if="item.editFlag && userInfo.canCommon">
           <a-input
             placeholder="说点啥吧。。。"
             v-model="commonNewInsert.text"

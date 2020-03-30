@@ -14,7 +14,7 @@ async function tokenLogin() {
 let responseLogin;
 Axios.interceptors.request.use(
   async (config: AxiosRequestConfig) => {
-    console.log(store);
+    // console.log(store);
     if (config.url === "/user/login") {
       return config;
     }

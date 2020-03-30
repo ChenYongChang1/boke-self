@@ -17,6 +17,7 @@
       :clickEffect="true"
       clickMode="push"
     ></vue-particles>
+    <Login v-if="loginFlag" @removeLogin="loginFlag = false"></Login>
     <div class="appcontent">
       <router-view />
     </div>
@@ -26,8 +27,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 // tslint:disable-next-line
+import requests from "./components/request/requests";
 import { clickLove } from "./assets/js/util";
 // import axios from "./apis/axios";
+import { namespace } from "vuex-class";
+const userInfoNameSpace = namespace("userStore");
 
 interface ShowConfInter {
   windPower: number;
@@ -39,15 +43,119 @@ interface ShowConfInter {
 }
 
 @Component({
-  components: {},
+  components: {
+    Login: resolve => require(["./components/Login"], resolve)
+  }
 })
 export default class App extends Vue {
+  loginFlag: boolean = false;
+  @userInfoNameSpace.State(state => state.userInfo)
+  userInfo: any;
+
+  @userInfoNameSpace.Mutation("setAdminUser") setAdminUser: any;
+  @userInfoNameSpace.Mutation("setUserInfo") setUserInfo: any;
+
   public created() {
+    this.$message.config({
+      maxCount: 1
+    });
     console.log(process);
     clickLove();
+    this.getAdminUserInfo();
+    // console.log(navigator.userAgent,'navigator.userAgen');
+    document.addEventListener("keydown", this.handleEvent);
+    if (!(this.userInfo && this.userInfo.id)) {
+      if (localStorage.getItem("user")) {
+        let user = JSON.parse(localStorage.getItem("user") as string);
+        if (!(user && user.id)) {
+          this.addUser();
+        } else {
+          this.setUserInfo(user);
+        }
+      } else {
+        this.addUser();
+      }
+    }
     // axios.get("/query/querytable?db=video").then(res => {
     //   console.log(res);
     // });
+  }
+  private async addUser() {
+    // let secondsToGo = 5;
+    // const modal = this.$success({
+    //   title: "This is a notification message",
+    //   content: `<div>1111</div>`
+    // });
+    // const interval = setInterval(() => {
+    //   secondsToGo -= 1;
+    //   modal.update({
+    //     content: `This modal will be destroyed after ${secondsToGo} second.`
+    //   });
+    // }, 1000);
+    // setTimeout(() => {
+    //   clearInterval(interval);
+    //   modal.destroy();
+    // }, secondsToGo * 1000);
+    let username = "user_" + Math.random();
+    let userMessage = {
+      id: Math.random() + "users",
+      userAgent: navigator.userAgent,
+      userNick: username,
+      userName: username,
+      password: "123",
+      createTime: new Date().toLocaleDateString().replace(/\//g,'-'),
+      activeNum: 0,
+      canEdit: false,
+      canCommon: true
+    };
+    console.log(navigator.userAgent, "navigator.userAgen");
+    let res = await requests.loginRequest({
+      userAgent: navigator.userAgent
+    });
+    console.log(res);
+    if (res && res.status == 200 && res.data.code == 200 && res.data.data && res.data.data.Data && res.data.data.Data.length) {
+      this.$message.success("登录成功");
+      localStorage.setItem("user", JSON.stringify(res.data.data.Data[0]));
+      this.setUserInfo(res.data.data.Data[0]);
+    } else {
+      let resadd = await requests.addUser(userMessage);
+      if (resadd && resadd.status == 200 && resadd.data.code == 200) {
+        this.$message.success("登录成功");
+        localStorage.setItem("user", JSON.stringify(userMessage));
+        this.setUserInfo(userMessage);
+      }
+    }
+    // return
+    // let res = await requests.addUser(userMessage);
+    // if (res && res.status == 200 && res.data.code == 200) {
+    //   this.$message.success("登录成功");
+    //   localStorage.setItem("user", JSON.stringify(userMessage));
+    //   this.setUserInfo(userMessage);
+    // }
+  }
+  handleEvent(e: any) {
+    if (e.keyCode === 13 && e.ctrlKey) {
+      this.loginFlag = true;
+    }
+    if (e.keyCode === 27 && this.loginFlag) {
+      this.loginFlag = false;
+    }
+  }
+  private async getAdminUserInfo() {
+    let res = await requests.getAdminUserInfo();
+    console.log(res);
+    if (
+      res &&
+      res.status == 200 &&
+      res.data.code == "200" &&
+      res.data.data.Data &&
+      res.data.data.Data.length
+    ) {
+      console.log(res.data.data.Data[0], "res.data.data.Data");
+      this.setAdminUser(res.data.data.Data[0]);
+    } else {
+      this.setAdminUser({});
+    }
   }
 }
 </script>
@@ -67,6 +175,24 @@ export default class App extends Vue {
 /* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateY(-60px);
   opacity: 0.3;
+}
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 0px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+  position: fixed;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #535353;
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: #ededed;
 }
 body {
   width: 100%;

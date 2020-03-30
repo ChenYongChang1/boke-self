@@ -46,7 +46,7 @@ import { activeInter, screenTimeInter } from "../../interface/views/index";
 import requests from "./request/requests";
 @Component({
   filters: {
-    formatTimeToChinese: (time: String) => {
+    formatTimeToChinese: (time: string) => {
       try {
         const timeArr: string[] = time.split("-");
         return timeArr[0] + "年" + timeArr[1] + "月" + timeArr[2] + "日";

@@ -53,6 +53,13 @@ const requests = {
     };
     return axios.post("/add/adddata", payload);
   },
+  addMakedown(markdown: any) {
+    const payload = {
+      jsonMessage: markdown,
+      db: "boke", table: "md",
+    };
+    return axios.post("/add/adddata", payload);
+  },
   updataMakedown(markdown: any) {
     const payload = {
       query: {

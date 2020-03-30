@@ -17,7 +17,7 @@
     <div class="detail-header">
       <div class="detail-home" @click="$router.push({path:'/'})">主页</div>
       {{activeDetail.title}}
-      </div>
+    </div>
     <div class="detail-content">
       <div class="detail-left">
         <a-menu
@@ -31,9 +31,22 @@
           <a-sub-menu @titleClick="titleClick" v-for="item in activeDetail.catalog" :key="item.id">
             <span slot="title">
               <!-- <a-icon type="appstore" /> -->
-              <span>{{item.name}}</span>
+              <div class="detail-title-sidbar" :style="{display: 'flex','justify-content': 'space-between'}">
+                <span>{{item.name}}</span>
+                <span v-if="userInfo.canEdit" @click.stop="">edit</span>
+                <span v-if="userInfo.canEdit" @click.stop="">add</span>
+              </div>
             </span>
-            <a-menu-item :key="childItem.mdId" v-for="childItem in item.childrens">{{childItem.name}}</a-menu-item>
+            <a-menu-item
+              :key="childItem.mdId"
+              v-for="childItem in item.childrens"
+            >
+            <div class="detail-title-sidbar" :style="{display: 'flex','justify-content': 'space-between'}">
+                <span>{{childItem.name}}</span>
+                <span v-if="userInfo.canEdit" @click.stop="">edit</span>
+                <span v-if="userInfo.canEdit" @click.stop="">add</span>
+              </div>
+            </a-menu-item>
           </a-sub-menu>
         </a-menu>
       </div>
@@ -62,7 +75,7 @@
               :activesCommonList="activesCommonList"
             />
           </div>
-          <div class="writecomon">
+          <div class="writecomon" v-if="userInfo.canCommon">
             <a-input
               placeholder="说点啥吧。。。"
               v-model="commonNewInsert.text"
@@ -82,7 +95,7 @@ import {
   activeDetailInter,
   activeInter,
   activesCommon,
-  siddBarInter,
+  siddBarInter
 } from "../../interface/views/detail";
 import requests from "./request/request";
 
@@ -90,16 +103,16 @@ const userInfoNameSpace = namespace("userStore");
 
 @Component({
   components: {
-    editMakeDownComponents: (resolve) =>
+    editMakeDownComponents: resolve =>
       require(["../../components/EditMakeDown.vue"], resolve),
-    MarkdownPro: (resolve) =>
+    MarkdownPro: resolve =>
       require(["../../components/src/components/pro/index.vue"], resolve),
-    DetailCommon: (resolve) =>
-      require(["../../components/DetailCommon.vue"], resolve),
-  },
+    DetailCommon: resolve =>
+      require(["../../components/DetailCommon.vue"], resolve)
+  }
 })
 export default class Detail extends Vue {
-  @userInfoNameSpace.State((state) => state.userInfo)
+  @userInfoNameSpace.State(state => state.userInfo)
   public userInfo: any;
   // siddBarInter
   public id: string | number = "";
@@ -112,11 +125,11 @@ export default class Detail extends Vue {
     lookNum: 0,
     cover: "",
     toTop: true,
-    catalog: [],
+    catalog: []
   };
   public contentMakeDown: activeInter = {
     id: "",
-    text: "",
+    text: ""
   };
 
   public commonNewInsert: activesCommon = {
@@ -128,7 +141,7 @@ export default class Detail extends Vue {
     userNick: "",
     editFlag: false,
     childrensShow: false,
-    childrens: [],
+    childrens: []
   };
   private selectedKey: Array<string | number> = [];
   private activesCommonList: activesCommon[] = [];
@@ -150,7 +163,7 @@ export default class Detail extends Vue {
   // 子组件传过来需要修改的childrens id
   public addComonUpdata({
     childrens,
-    id,
+    id
   }: {
     childrens: activesCommon;
     id: string | number;
@@ -158,13 +171,13 @@ export default class Detail extends Vue {
     this.addChildrens({
       activesCommonList: this.activesCommonList,
       childrens,
-      id,
+      id
     });
   }
   public async addChildrens({
     activesCommonList,
     childrens,
-    id,
+    id
   }: {
     activesCommonList: activesCommon[];
     childrens: activesCommon;
@@ -181,10 +194,10 @@ export default class Detail extends Vue {
   public editTreeData(
     treeData: activesCommon[],
     newTreeNode: activesCommon,
-    nowIndex?: number | undefined,
+    nowIndex?: number | undefined
   ) {
     for (let i = 0, len = treeData.length; i < len; i++) {
-      if (this.activesCommonList.some((item) => item.id == treeData[i].id)) {
+      if (this.activesCommonList.some(item => item.id == treeData[i].id)) {
         nowIndex = i;
       }
       if (treeData[i].childrens) {
@@ -198,7 +211,10 @@ export default class Detail extends Vue {
     return treeData;
   }
   public setDefaultOpen(siddbarObj: siddBarInter | undefined) {
-    console.log(siddbarObj, "siddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObj");
+    console.log(
+      siddbarObj,
+      "siddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObjsiddbarObj"
+    );
     if (typeof siddbarObj == "undefined") {
       return;
     }
@@ -222,13 +238,29 @@ export default class Detail extends Vue {
       typeof flag === "undefined" ? !this.editFlag : flag || false;
   }
   private saveMakeDown(value: string) {
+    console.log(this.contentMakeDown.id);
+    if (this.contentMakeDown.id) {
+      this.contentMakeDown.text = value;
+      this.updataMakedown(value);
+    } else {
+      console.log("adddddddddddddddddddd");
+      this.contentMakeDown.id = this.mdId || Math.random() + "md";
+      this.contentMakeDown.text = value;
+      this.addMakedown(this.contentMakeDown);
+    }
 
-    this.contentMakeDown.text = value;
-    this.updataMakedown(value);
     console.log(value);
   }
+  private async addMakedown(contentMakeDown: activeInter) {
+    const res = await requests.addMakedown({
+      id: contentMakeDown.id,
+      text: contentMakeDown.text
+    });
+    console.log(res);
+    this.editShowHide(false);
+  }
   private async updataMakedown(value: string) {
-    const res = await requests.updataMakedown({id: this.mdId, text: value});
+    const res = await requests.updataMakedown({ id: this.mdId, text: value });
     this.editShowHide(false);
   }
   private async getActives() {
@@ -238,7 +270,7 @@ export default class Detail extends Vue {
       this.activeDetail = res.data.data.Data[0];
       if (this.activeDetail.catalog) {
         this.setDefaultOpen(
-          this.activeDetail.catalog && this.activeDetail.catalog[0],
+          this.activeDetail.catalog && this.activeDetail.catalog[0]
         );
         this.mdId =
           (this.activeDetail.catalog &&
@@ -256,7 +288,7 @@ export default class Detail extends Vue {
         lookNum: 0,
         cover: "",
         toTop: true,
-        catalog: [],
+        catalog: []
       };
     }
   }
@@ -289,11 +321,11 @@ export default class Detail extends Vue {
       console.log(
         this.activesCommonList,
         "this.activesCommonList",
-        this.changeCommonIndex as number,
+        this.changeCommonIndex as number
       );
       const res = await requests.updataCommon(
         this.activesCommonList[this.changeCommonIndex as number],
-        this.activesCommonList[this.changeCommonIndex as number].id,
+        this.activesCommonList[this.changeCommonIndex as number].id
       );
       if (res && res.status == 200 && res.data.code == "200") {
         console.log(res);
@@ -310,14 +342,14 @@ export default class Detail extends Vue {
   private async saveCommon() {
     this.commonNewInsert = {
       id: Math.random() + "",
-      mdId: this.mdId ,
+      mdId: this.mdId,
       text: this.commonNewInsert.text,
       createTime: new Date().toLocaleDateString().replace(/\//g, "-"),
       userId: this.userInfo.id,
       userNick: this.userInfo.userNick,
       editFlag: false,
       childrensShow: false,
-      childrens: [],
+      childrens: []
     };
     this.activesCommonList.push({ ...this.commonNewInsert });
     const res = await requests.addcommon(this.commonNewInsert);
@@ -327,6 +359,7 @@ export default class Detail extends Vue {
     }
   }
   private setMarkDownText(Data: activeInter[]) {
+    console.log(Data, "Data");
     if (Data && Data.length) {
       this.contentMakeDown = Data[0];
     } else {
@@ -351,7 +384,7 @@ export default class Detail extends Vue {
     text-align: center;
     font-size: 20px;
     position: relative;
-    .detail-home{
+    .detail-home {
       position: absolute;
       top: 0;
       line-height: 50px;
@@ -391,6 +424,10 @@ export default class Detail extends Vue {
       z-index: 1;
       .ant-menu {
         background: rgba($color: #ffffff, $alpha: 0.5);
+      }
+      .detail-title-sidbar{
+        width: 100%;
+        display: flex;
       }
     }
     .detail-left::v-deep .ant-menu-submenu > .ant-menu {

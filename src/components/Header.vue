@@ -4,17 +4,19 @@
       <!-- <img src="../assets/image/logo.jpg" alt=""> -->
       happysheep
     </div>
-    <div class="login">
-      登录
+    <div class="login" v-if="userInfo && userInfo.canEdit">
+      +
     </div>
   </header>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-
+import { namespace } from "vuex-class";
+const userInfoNameSpace = namespace("userStore");
 @Component
 export default class Header extends Vue {
-
+  @userInfoNameSpace.State((state) => state.useInfo)
+  userInfo: any
 }
 </script>
 
