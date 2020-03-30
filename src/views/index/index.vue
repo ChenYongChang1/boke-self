@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="active-list">
-      <div class="active-item" v-for="item in listsActives" :key="item.id" @click="$router.push({path:'/detail/'+item.id})">
+      <div class="active-item" v-for="item in showList" :key="item.id" @click="$router.push({path:'/detail/'+item.id})">
         <div class="active-time">{{ item.creatTime | formatTimeToChinese }}</div>
         <div class="active-title">
           <div class="active-img">
@@ -79,6 +79,21 @@ export default class Index extends Vue {
 
   public changeSceen(id: number) {
     this.screenTimeShow = id;
+  }
+  private sorted(a:any, b:any){
+    console.log(a.createTime , b.createTime);
+    if(this.screenTimeShow == 1){
+      return a.createTime > b.createTime ? 1 : -1
+    }else{
+      return a.createTime < b.createTime ? 1 : -1
+    }
+    
+  }
+  private get showList(){
+    // listsActives
+    
+    console.log('jinlaile');
+    return this.listsActives.sort(this.sorted)
   }
   private async getActives() {
     const res = await requests.getActives();
