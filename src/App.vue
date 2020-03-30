@@ -176,11 +176,14 @@ export default class App extends Vue {
   transform: translateY(-60px);
   opacity: 0.3;
 }
+
 ::-webkit-scrollbar {
   /*滚动条整体样式*/
-  width: 0px; /*高宽分别对应横竖滚动条的尺寸*/
+  width: 2px; /*高宽分别对应横竖滚动条的尺寸*/
   height: 1px;
-  position: fixed;
+  transition: width 1s;
+  position: absolute;
+  right: 0;
 }
 ::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
@@ -193,6 +196,7 @@ export default class App extends Vue {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   background: #ededed;
+  position: fixed;
 }
 body {
   width: 100%;
@@ -203,6 +207,7 @@ body {
   background-size: cover;
   margin: 0 auto;
   cursor: url(https://files.cnblogs.com/files/wkfvawl/cursor.ico), auto;
+  overflow:overlay;
 }
 #particles-js {
   position: fixed;

@@ -72,7 +72,44 @@ const requests = {
     };
     return axios.post("/updata/updata", payload);
   },
-
-
+  saveCatalog(activeId:string | number ,catalog: any, title:string) {
+    const payload = {
+      query: {
+        id: activeId,
+      },
+      jsonMessage: {
+        catalog:catalog,
+        title:title
+      },
+      db: "boke", table: "actives",
+    };
+    return axios.post("/updata/updata", payload);
+  },
+  savelookNum(activeId:string | number , lookchange: any){
+    const payload = {
+      query: {
+        id: activeId,
+      },
+      jsonMessage: lookchange,
+      db: "boke", table: "actives",
+    };
+    return axios.post("/updata/updata", payload);
+  },
+  getremoberPeople(actId: string | number){
+    const payload = {
+      jsonMessage: {
+        actId:actId
+      },
+      db: "boke", table: "lookPeople",
+    };
+    return axios.post("/query/getdata", payload);
+  },
+  remoberPeople(people:any){
+    const payload = {
+      jsonMessage: people,
+      db: "boke", table: "lookPeople",
+    };
+    return axios.post("/add/adddata", payload);
+  },
 };
 export default requests;

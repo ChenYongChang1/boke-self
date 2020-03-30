@@ -19,7 +19,9 @@ Vue.use(Input);
 Vue.use(Icon);
 
 import $message from 'ant-design-vue'
+import $confirm from 'ant-design-vue'
 Vue.use($message);
+Vue.use($confirm)
 
 // console.log($message,'message');
 // import { mavonEditor } from "mavon-editor";

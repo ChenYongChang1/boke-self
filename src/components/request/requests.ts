@@ -36,6 +36,22 @@ const requests = {
     };
     return axios.post("/add/adddata", payload);
   },
+  addActives(actives: any) {
+    const payload = {
+      jsonMessage: actives, db: "boke", table: "actives",
+    };
+    return axios.post("/add/adddata", payload);
+  },
+  changeAdminCover(cover: any){
+    const payload = {
+      query: {
+        'adminUser': true,
+      },
+      jsonMessage: cover,
+      db: "boke", table: "user",
+    };
+    return axios.post("/updata/updata", payload);
+  }
 };
 
 export default requests;

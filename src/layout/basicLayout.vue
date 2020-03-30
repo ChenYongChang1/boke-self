@@ -5,14 +5,14 @@
       @mouseover="mouseover"
       @mouseleave="mouseleave"
     >
-      <Header />
+      <Header @reloadList="reloadList" />
     </div>
     <div class="content">
       <div class="left">
         <Sidbar></Sidbar>
       </div>
       <div class="right bgcolor">
-        <router-view></router-view>
+        <router-view v-if="reloadListFlag"></router-view>
       </div>
     </div>
   </div>
@@ -33,6 +33,7 @@ export default class Basic extends Vue {
   public oldScrollPosition: number = 0;
   public newScrollPosition: number = 0;
   public headerShowHideFlag: number = 0; // 0 原始位置 1出现  2消失
+  private reloadListFlag: boolean =true;
   public created() {
     this.listenerFunction();
     this.handleScroll();
@@ -44,6 +45,12 @@ export default class Basic extends Vue {
       this.handleScroll,
       true,
     );
+  }
+  reloadList(){
+    this.reloadListFlag = false;
+    setTimeout(()=>{
+      this.reloadListFlag = true
+    },10)
   }
   public mouseover() {
     this.headerShowHideFlag = 1;
