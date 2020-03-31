@@ -201,7 +201,7 @@ export default class App extends Vue {
 body {
   width: 100%;
   min-height: 200vh;
-  background: url("http://106.14.212.56/tim.jpg") fixed;
+  background: url("https://cyc-save.oss-cn-shanghai.aliyuncs.com/cyc-save/15856452770450.324125515392377.jpg") fixed;
   background-position: 0 0;
   background-repeat: no-repeat;
   background-size: cover;
