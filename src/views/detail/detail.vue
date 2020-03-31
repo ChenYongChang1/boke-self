@@ -35,7 +35,7 @@
         <!-- v-if="selectedKey && selectedKey.length && activeDetail.catalog && activeDetail.catalog.length" -->
         <a-menu
           @click="handleClick"
-          style="width: 256px"
+          style="width: 286px"
           :defaultSelectedKeys="selectedKey"
           :openKeys.sync="openKeys"
           mode="inline"
@@ -54,7 +54,7 @@
                 <span v-if="editcalalog == item.id && userInfo.canEdit">
                   <a-input v-model="item.name" style="width:120px" @click.stop></a-input>
                 </span>
-                <span v-else>{{item.name}}</span>
+                <span v-else style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.name}}</span>
                 <span
                   v-if="userInfo.canEdit && editcalalog != item.id"
                   @click.stop="deleChapter(index)"
@@ -74,7 +74,7 @@
                 <span v-if="editcalalog == childItem.id && userInfo.canEdit">
                   <a-input style="width:120px" @click.stop v-model="childItem.name"></a-input>
                 </span>
-                <span v-else>{{childItem.name}}</span>
+                <span v-else style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">{{childItem.name}}</span>
                 <span v-if="userInfo.canEdit" @click.stop="editcalalog = childItem.id">
                   <span
                     v-if="userInfo.canEdit && editcalalog != childItem.id"
@@ -589,7 +589,7 @@ export default class Detail extends Vue {
     display: flex;
     justify-content: space-between;
     .detail-left {
-      width: 256px;
+      width: 286px;
       position: relative;
       z-index: 1;
       .add-chapter {
@@ -615,7 +615,7 @@ export default class Detail extends Vue {
       background: rgba($color: #ffffff, $alpha: 0);
     }
     .detail-right {
-      width: calc(100% - 270px);
+      width: calc(100% - 300px);
       background: rgba($color: #ffffff, $alpha: 0.5);
       padding: 0 20px;
       padding-bottom: 10px;
