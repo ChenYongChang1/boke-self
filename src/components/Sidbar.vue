@@ -7,7 +7,11 @@
       <div class="head-img">
         <img :src="adminUser.cover" alt />
         <div class="change-img" v-if="userInfo.adminUser">
-          <input type="file" @change="changeHeaderImg" v-if="ossSignObj.accessid" />
+          <input
+            type="file"
+            @change="changeHeaderImg"
+            v-if="ossSignObj.accessid"
+          />
           更换头像
         </div>
         <div class="change-img" @click="showModal" v-else>给我留言</div>
@@ -26,9 +30,9 @@
           ></iframe>
         </div>
         <div class="edit-statistics">
-          <div>昵称： {{adminUser.userNick}}</div>
-          <div>访问： {{readPeople}}人</div>
-          <div>创建时间： {{adminUser.createTime}}</div>
+          <div>昵称： {{ adminUser.userNick }}</div>
+          <div>访问： {{ readPeople }}人</div>
+          <div>创建时间： {{ adminUser.createTime }}</div>
           <!-- <div>最近上传： {{adminUser.createTime}}</div> -->
         </div>
         <div class="calendar">
@@ -47,14 +51,21 @@ import { namespace } from "vuex-class";
 import { ossSignInter } from "../interface/components/editMakdown";
 import requests from "./request/requests";
 const userInfoNameSpace = namespace("userStore");
+import { Calendar, Input, Modal } from "ant-design-vue";
 
-@Component({})
+@Component({
+  components: {
+    "a-calendar": Calendar,
+    "a-modal": Modal,
+    "a-input": Input
+  }
+})
 export default class Sidbar extends Vue {
   @userInfoNameSpace.State(state => state.userInfo)
   userInfo: any;
   @userInfoNameSpace.State(state => state.adminUser)
   adminUser: any;
-  @userInfoNameSpace.Mutation('setAdminUser') setAdminUser:any;
+  @userInfoNameSpace.Mutation("setAdminUser") setAdminUser: any;
   message: string = "";
   visible: boolean = false;
   readPeople: number = 0;
@@ -80,10 +91,10 @@ export default class Sidbar extends Vue {
     }
   }
 
-  @Watch('userInfo.adminUser')
-  changeAdminLogin(val:boolean){
+  @Watch("userInfo.adminUser")
+  changeAdminLogin(val: boolean) {
     // console.log('valvalvalvalvalvalvalval',val);
-    if(val){
+    if (val) {
       this.getOssSign();
     }
   }
@@ -108,7 +119,7 @@ export default class Sidbar extends Vue {
   }
   private async changeHeaderImg(e: any) {
     console.log(e);
-    let file:File = e.target.files[0]
+    let file: File = e.target.files[0];
     const request = new FormData();
     request.append("OSSAccessKeyId", this.ossSignObj.accessid); // Bucket 拥有者的Access Key Id。
     request.append("policy", this.ossSignObj.policy); // policy规定了请求的表单域的合法性
@@ -126,19 +137,19 @@ export default class Sidbar extends Vue {
         // console.log(r,'http://tfoneline.oss-cn-hangzhou.aliyuncs.com/'+`${this.signsObj.dir}/${names}`);
         const imgUrl: string =
           that.ossSignObj.host + "/" + `${this.ossSignObj.dir}/${names}`;
-          that.changeAdminCover(imgUrl)
-        e.target.value=''
+        that.changeAdminCover(imgUrl);
+        e.target.value = "";
         return imgUrl;
       })
       .catch((e: any) => {
         // console.log(e,'eeee');
       });
   }
-  private async changeAdminCover(cover: string){
-    let res = await requests.changeAdminCover({cover:cover})
+  private async changeAdminCover(cover: string) {
+    let res = await requests.changeAdminCover({ cover: cover });
     let adminuserMess = JSON.parse(JSON.stringify(this.adminUser));
-          adminuserMess.cover = cover
-        this.setAdminUser(adminuserMess)
+    adminuserMess.cover = cover;
+    this.setAdminUser(adminuserMess);
   }
   private async liuyanSend() {
     if (!this.userInfo.id) {

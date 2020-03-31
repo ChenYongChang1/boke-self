@@ -44,6 +44,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import { activeInter, screenTimeInter } from "../../interface/views/index";
 import requests from "./request/requests";
+import { Button, Calendar, Dropdown, Input, Icon, Menu, message, Modal,  } from "ant-design-vue";
+
 @Component({
   filters: {
     formatTimeToChinese: (time: string) => {
@@ -55,7 +57,12 @@ import requests from "./request/requests";
       }
     },
   },
-  components: {},
+  components: {
+    'a-dropdown':Dropdown,
+    'a-menu': Menu,
+    'a-menu-item': Menu.Item,
+    'a-button': Button
+  },
 })
 export default class Index extends Vue {
   public listsActives: activeInter[] = [

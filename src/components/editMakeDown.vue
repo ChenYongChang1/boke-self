@@ -24,10 +24,13 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { ossSignInter } from "../interface/components/editMakdown";
 import requests from "./request/requests";
+import { Button, } from "ant-design-vue";
+
 // import MarkdownPro from './src/components/pro/index';
 @Component({
   components: {
     MarkdownPro: (resolve) => require(["./src/components/pro/index.vue"], resolve),
+    AButton:Button
   },
 })
 export default class EditMakeDown extends Vue {

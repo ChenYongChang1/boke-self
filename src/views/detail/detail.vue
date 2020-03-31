@@ -15,7 +15,7 @@
       </div>
     </transition>
     <div class="detail-header">
-      <div class="detail-home" @click="$router.push({path:'/'})">主页</div>
+      <div class="detail-home" @click="$router.push({ path: '/' })">主页</div>
       <span v-if="editTitleFlag">
         <a-input
           v-model="activeDetail.title"
@@ -26,12 +26,19 @@
       </span>
       <span
         v-else
-        @click="userInfo.canEdit && (editTitleFlag = true) && (oldTitle=activeDetail.title)"
-      >{{activeDetail.title}}</span>
+        @click="
+          userInfo.canEdit &&
+            (editTitleFlag = true) &&
+            (oldTitle = activeDetail.title)
+        "
+        >{{ activeDetail.title }}</span
+      >
     </div>
     <div class="detail-content">
       <div class="detail-left">
-        <div class="add-chapter" v-if="userInfo.canEdit" @click="addChapter">添加章节</div>
+        <div class="add-chapter" v-if="userInfo.canEdit" @click="addChapter">
+          添加章节
+        </div>
         <!-- v-if="selectedKey && selectedKey.length && activeDetail.catalog && activeDetail.catalog.length" -->
         <a-menu
           @click="handleClick"
@@ -49,42 +56,73 @@
               <!-- <a-icon type="appstore" /> -->
               <div
                 class="detail-title-sidbar"
-                :style="{display: 'flex','justify-content': 'space-between'}"
+                :style="{ display: 'flex', 'justify-content': 'space-between' }"
               >
                 <span v-if="editcalalog == item.id && userInfo.canEdit">
-                  <a-input v-model="item.name" style="width:120px" @click.stop></a-input>
+                  <a-input
+                    v-model="item.name"
+                    style="width:120px"
+                    @click.stop
+                  ></a-input>
                 </span>
-                <span v-else style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.name}}</span>
+                <span
+                  v-else
+                  style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;"
+                  >{{ item.name }}</span
+                >
                 <span
                   v-if="userInfo.canEdit && editcalalog != item.id"
                   @click.stop="deleChapter(index)"
-                >delete</span>
+                  >delete</span
+                >
                 <span v-if="userInfo.canEdit">
-                  <span v-if="editcalalog != item.id" @click.stop="editcalalog = item.id">edit</span>
+                  <span
+                    v-if="editcalalog != item.id"
+                    @click.stop="editcalalog = item.id"
+                    >edit</span
+                  >
                   <span v-else @click.stop="saveCatalog">save</span>
                 </span>
-                <span v-if="userInfo.canEdit" @click.stop="addCatalog(index)">add</span>
+                <span v-if="userInfo.canEdit" @click.stop="addCatalog(index)"
+                  >add</span
+                >
               </div>
             </span>
-            <a-menu-item :key="childItem.mdId" v-for="(childItem, childIndex) in item.childrens">
+            <a-menu-item
+              :key="childItem.mdId"
+              v-for="(childItem, childIndex) in item.childrens"
+            >
               <div
                 class="detail-title-sidbar"
-                :style="{display: 'flex','justify-content': 'space-between'}"
+                :style="{ display: 'flex', 'justify-content': 'space-between' }"
               >
                 <span v-if="editcalalog == childItem.id && userInfo.canEdit">
-                  <a-input style="width:120px" @click.stop v-model="childItem.name"></a-input>
+                  <a-input
+                    style="width:120px"
+                    @click.stop
+                    v-model="childItem.name"
+                  ></a-input>
                 </span>
-                <span v-else style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;">{{childItem.name}}</span>
-                <span v-if="userInfo.canEdit" @click.stop="editcalalog = childItem.id">
+                <span
+                  v-else
+                  style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;"
+                  >{{ childItem.name }}</span
+                >
+                <span
+                  v-if="userInfo.canEdit"
+                  @click.stop="editcalalog = childItem.id"
+                >
                   <span
                     v-if="userInfo.canEdit && editcalalog != childItem.id"
                     @click.stop="deleCatalog(index, childIndex)"
                     style="margin-right:10px"
-                  >delete</span>
+                    >delete</span
+                  >
                   <span
                     v-if="editcalalog != childItem.id"
                     @click.stop="editcalalog = childItem.id"
-                  >edit</span>
+                    >edit</span
+                  >
                   <span v-else @click.stop="saveCatalog">save</span>
                 </span>
               </div>
@@ -108,11 +146,15 @@
         <div class="detail-markdown-commont">
           <div class="detail-markdown-common-title">
             <span>评论：</span>
-            <span>查看({{activeDetail.lookNum}});回复({{activesCommonList && activesCommonList.length}})</span>
+            <span
+              >查看({{ activeDetail.lookNum }});回复({{
+                activesCommonList && activesCommonList.length
+              }})</span
+            >
           </div>
           <div>
             <DetailCommon
-              v-if=" activesCommonList && activesCommonList.length"
+              v-if="activesCommonList && activesCommonList.length"
               @addComonUpdata="addComonUpdata"
               :activesCommonList="activesCommonList"
             />
@@ -142,6 +184,7 @@ import {
 import requests from "./request/request";
 
 const userInfoNameSpace = namespace("userStore");
+import { Button, Input, Menu } from "ant-design-vue";
 
 @Component({
   components: {
@@ -150,7 +193,11 @@ const userInfoNameSpace = namespace("userStore");
     MarkdownPro: resolve =>
       require(["../../components/src/components/pro/index.vue"], resolve),
     DetailCommon: resolve =>
-      require(["../../components/DetailCommon.vue"], resolve)
+      require(["../../components/DetailCommon.vue"], resolve),
+    "a-button": Button,
+    "a-menu-item": Menu.Item,
+    "a-menu": Menu,
+    "a-input": Input
   }
 })
 export default class Detail extends Vue {
@@ -164,7 +211,7 @@ export default class Detail extends Vue {
     title: "",
     userId: "",
     createTime: "",
-    userNick:"",
+    userNick: "",
     lookNum: 0,
     cover: "",
     toTop: true,
@@ -211,15 +258,14 @@ export default class Detail extends Vue {
       id: Math.random(),
       userId: this.userInfo.id,
       createTime: new Date().toLocaleString(),
-      actId:this.id,
+      actId: this.id
     });
     let getremober = await requests.getremoberPeople(this.id);
     if (getremober && getremober.status == 200 && getremober.data.code == 200) {
       this.activeDetail.lookNum = getremober.data.data.length;
-      let res = await requests.savelookNum(
-        this.id,
-        {lookNum:this.activeDetail.lookNum}
-      );
+      let res = await requests.savelookNum(this.id, {
+        lookNum: this.activeDetail.lookNum
+      });
     } else {
       this.activeDetail.lookNum = 0;
     }
@@ -455,7 +501,7 @@ export default class Detail extends Vue {
         userId: "",
         createTime: "",
         lookNum: 0,
-        userNick:"",
+        userNick: "",
         cover: "",
         toTop: true,
         catalog: []

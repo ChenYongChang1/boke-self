@@ -29,7 +29,14 @@ import { Vue, Component } from "vue-property-decorator";
 import requests from './request/requests'
 import { namespace } from "vuex-class";
 const userInfoNameSpace = namespace("userStore");
-@Component({})
+import { Button, Input, Icon, } from "ant-design-vue";
+@Component({
+  components:{
+    'a-button':Button,
+    'a-icon': Icon,
+    'a-input': Input
+  }
+})
 export default class Login extends Vue {
   formInline: { userName: string; password: string } = {
     userName: "",

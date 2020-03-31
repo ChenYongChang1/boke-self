@@ -40,9 +40,13 @@ import { namespace } from "vuex-class";
 
 const userInfoNameSpace = namespace("userStore");
 
+import { Input,  } from "ant-design-vue";
+
+
 @Component({
   components: {
     DetailCommon: (resolve) => require(["./DetailCommon.vue"], resolve),
+    AInput:Input,
   },
 })
 export default class DetailCommon extends Vue {
