@@ -9,7 +9,14 @@ import vueParticles from "vue-particles";
 Vue.use(vueParticles);
 
 import { Button, Calendar, Dropdown, Input, Icon,Menu,  } from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
+import "ant-design-vue/dist/antd.min.css";
+// import 'ant-design-vue/lib/button/style';
+// import 'ant-design-vue/lib/calendar/style';
+// import 'ant-design-vue/lib/dropdown/style';
+// import 'ant-design-vue/lib/input/style';
+// import 'ant-design-vue/lib/icon/style';
+// import 'ant-design-vue/lib/menu/style';
+
 
 Vue.use(Calendar);
 Vue.use(Dropdown);
