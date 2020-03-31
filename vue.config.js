@@ -1,4 +1,5 @@
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
+const path = require('path');
 // 定义压缩文件类型
 const productionGzipExtensions = ["js", "css"];
 module.exports = {
@@ -6,6 +7,12 @@ module.exports = {
   outputDir: "dist",
   assetsDir: "static",
   productionSourceMap: false,
+  // resolve: {
+  //   alias: {
+  //     "@ant-design/icons/lib/dist$": path.resolve(__dirname, "../src/icons.ts"),
+  //     "@": path.resolve(__dirname, "../src")
+  //   },
+  // },
   css: {
     requireModuleExtension: true, // 是否开启支持‘foo.module.css’样式
     extract: true, // 是否使用css分离插件 ExtractTextPlugin，采用独立样式文件载入，不采用<style>方式内联至html文件中
@@ -31,6 +38,9 @@ module.exports = {
         minRatio: 0.5,
         deleteOriginalAssets: false //是否删除源文件
       })
-    ]
+    ],
+    externals: {
+      // "vue-antd-ui": "antd"
+    }
   }
 };
