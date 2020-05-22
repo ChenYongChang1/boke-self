@@ -79,7 +79,7 @@ export default class Sidbar extends Vue {
   };
   personMessage: { music: string } = {
     music:
-      "https://music.163.com/outchain/player?type=2&id=31134621&auto=1&height=66"
+      "https://music.163.com/outchain/player?type=2&id=1425355439&auto=1&height=66"
   };
   showModal() {
     this.visible = true;
