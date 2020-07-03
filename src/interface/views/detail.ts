@@ -2,7 +2,7 @@ interface siddBarInter {
   id: string | number;
   name: string;
   mdId: string | number;
-  isDelete?: boolean;
+  isdelete?: boolean;
   childrens?: siddBarInter[];
 }
 interface activeInter {

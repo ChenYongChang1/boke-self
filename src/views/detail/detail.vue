@@ -344,7 +344,7 @@ export default class Detail extends Vue {
       okText: "确认",
       cancelText: "取消",
       async onOk() {
-        (that.activeDetail.catalog as siddBarInter[])[index].isDelete = true;
+        (that.activeDetail.catalog as siddBarInter[])[index].isdelete = true;
         await that.saveCatalog();
       }
       // },
@@ -360,7 +360,7 @@ export default class Detail extends Vue {
       cancelText: "取消",
       async onOk() {
         ((that.activeDetail.catalog as siddBarInter[])[indexOne]
-          .childrens as siddBarInter[])[index].isDelete = true;
+          .childrens as siddBarInter[])[index].isdelete = true;
         // .splice(index, 1);
         await that.saveCatalog();
       }
